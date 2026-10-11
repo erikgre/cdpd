@@ -3,7 +3,6 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/cdefs.h>
 #include <unistd.h>
 
 #define OPEN_FLAGS O_RDONLY | O_CREAT
