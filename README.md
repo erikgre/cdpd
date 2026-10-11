@@ -1,13 +1,13 @@
 # cdpd
-## Change direcory previous direcory
+## Change directory previous directory
 
-cdpd is a simple shell utilty that changes directory to the previous one.<br>
+cdpd is a simple shell 0 that changes directory to the previous one.<br>
 It differs from "cd -" in one key aspect, it works between shells.<br>
 You can work in a directory, open a new shell, and immediately<br>
 start working in the same directory.<br>
 
 
-## Compiling and intalling
+## Compiling and installing
 
 In order to compile it, simply type<br>
 ```console
