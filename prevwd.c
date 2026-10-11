@@ -29,6 +29,5 @@ int main(void) {
   }
 
   puts(old_pwd);
-  close(fd);
   return 0;
 }

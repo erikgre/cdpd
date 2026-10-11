@@ -2,9 +2,9 @@ alias cdpd='cd $(prevwd)'
 
 autoload -U add-zsh-hook
 
-write_lastpwd() {
+write_prevwd() {
     printf '%s' "$PWD" > ~/.prevwd
 }
 
-add-zsh-hook chpwd write_lastpwd
+add-zsh-hook chpwd write_prevwd
 
