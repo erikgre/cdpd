@@ -46,3 +46,7 @@ It is actually just an alias<br>
 ```shell
 alias cdpd='cd $(prevwd)'
 ```
+
+## Disclaimer
+This could all be done with just shell scripts.<br>
+But i wanted to write some C
