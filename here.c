@@ -40,6 +40,9 @@ int main(int argc, char *argv[]) {
     char *pwd = getenv("PWD");
     fputs(pwd, file);
 
+  } else if (argv[1][0] == '-' && argv[1][1] == '\0') {
+    char *oldpwd = getenv("OLDPWD");
+    fputs(oldpwd, file);
   } else {
     struct stat st;
 
