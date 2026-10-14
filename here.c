@@ -1,5 +1,5 @@
+#define _DEFAULT_SOURCE
 #define _POSIX_C_SOURCE 200809L
-#define _XOPEN_SOURCE 500
 
 #include "cdpd.h"
 #include <errno.h>
@@ -40,13 +40,23 @@ int main(int argc, char *argv[]) {
     char *pwd = getenv("PWD");
     fputs(pwd, file);
 
-  } else if (argv[1][0] == '-' && argv[1][1] == '\0') {
+  } else if (memcmp(argv[1], "-", 2) == 0) {
     char *oldpwd = getenv("OLDPWD");
+    if (oldpwd == NULL) {
+      oldpwd = getenv("PWD");
+    }
     fputs(oldpwd, file);
   } else {
+    char buf[MAX_PATH_LEN + 1];
+
+    if (realpath(argv[1], buf) == NULL) {
+      print_failure(argv[1]);
+      return EXIT_FAILURE;
+    }
+
     struct stat st;
 
-    if (fstatat(AT_FDCWD, argv[1], &st, 0) != 0) {
+    if (stat(buf, &st) != 0) {
       print_failure(argv[1]);
       return EXIT_FAILURE;
     }
@@ -56,12 +66,7 @@ int main(int argc, char *argv[]) {
       print_failure(argv[1]);
       return EXIT_FAILURE;
     }
-    char buf[MAX_PATH_LEN + 1];
 
-    if (realpath(argv[1], buf) == NULL) {
-      print_failure(argv[1]);
-      return EXIT_FAILURE;
-    }
     fputs(buf, file);
   }
 

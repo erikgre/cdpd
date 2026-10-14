@@ -14,10 +14,5 @@ int open_histfile(int flags) {
 
   errno = 0;
   int fd = open(buf, flags, MODE);
-
-  if (unlikely(errno != 0)) {
-    return -1;
-  }
-
   return fd;
 }
