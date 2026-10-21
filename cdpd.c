@@ -1,5 +1,4 @@
 #include "cdpd.h"
-#include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +11,6 @@ int open_histfile(int flags) {
   char buf[MAX_PATH_LEN + 1];
   snprintf(buf, sizeof(buf), "%s/%s", home, HISTFILE);
 
-  errno = 0;
   int fd = open(buf, flags, MODE);
   return fd;
 }
