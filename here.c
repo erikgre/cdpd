@@ -11,8 +11,12 @@
 
 #define OPEN_FLAGS O_CREAT | O_WRONLY | O_TRUNC
 
+void __attribute__((cold)) print_invalid_args(void) {
+  fputs("here: To many arguments\n", stderr);
+}
+
 void __attribute__((cold)) print_fail_open(void) {
-  fprintf(stderr, "Failed to open histfile: %s/%s: %s\n", getenv("HOME"),
+  fprintf(stderr, "here: Failed to open histfile: %s/%s: %s\n", getenv("HOME"),
           HISTFILE, strerror(errno));
 }
 
@@ -20,32 +24,37 @@ void __attribute__((cold)) print_failure(const char *restrict path) {
   fprintf(stderr, "here: %s: %s\n", strerror(errno), path);
 }
 
-int main(int argc, char *argv[]) {
-  if (argc > 2) {
-    return EXIT_FAILURE;
-  }
-  int fd = open_histfile(OPEN_FLAGS);
+int write_histfile(const char *restrict str) {
+  const int fd = open_histfile(OPEN_FLAGS);
   if (fd == -1) {
-    print_fail_open();
-    return EXIT_FAILURE;
+    return EOF;
   }
-
   FILE *file = fdopen(fd, "w");
   if (file == NULL) {
-    print_fail_open();
+    return EOF;
+  }
+
+  return fputs(str, file);
+}
+
+int main(int argc, char *argv[]) {
+  if (argc > 2) {
+    print_invalid_args();
     return EXIT_FAILURE;
   }
 
-  if (argc == 1) {
-    char *pwd = getenv("PWD");
-    fputs(pwd, file);
+  char *path;
 
+  if (argc == 1) {
+    path = getenv("PWD");
   } else if (memcmp(argv[1], "-", 2) == 0) {
     char *oldpwd = getenv("OLDPWD");
     if (oldpwd == NULL) {
       oldpwd = getenv("PWD");
     }
-    fputs(oldpwd, file);
+    puts(oldpwd);
+
+    path = oldpwd;
   } else {
     char buf[MAX_PATH_LEN + 1];
 
@@ -67,7 +76,12 @@ int main(int argc, char *argv[]) {
       return EXIT_FAILURE;
     }
 
-    fputs(buf, file);
+    path = buf;
+  }
+
+  if (write_histfile(path) == EOF) {
+    print_fail_open();
+    return EXIT_FAILURE;
   }
 
   return EXIT_SUCCESS;

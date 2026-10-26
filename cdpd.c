@@ -7,7 +7,7 @@
 #define MODE S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
 
 int open_histfile(int flags) {
-  char *home = getenv("HOME");
+  const char *home = getenv("HOME");
   char buf[MAX_PATH_LEN + 1];
   snprintf(buf, sizeof(buf), "%s/%s", home, HISTFILE);
 
