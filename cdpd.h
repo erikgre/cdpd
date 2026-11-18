@@ -1,9 +1,7 @@
 #ifdef __linux__
 #include <linux/limits.h>
-#elif defined(__APPLE__)
-#include <sys/syslimits.h>
 #else
-#define PATH_MAX 1024
+#define PATH_MAX 4096
 #endif
 
 #define MAX_PATH_LEN PATH_MAX

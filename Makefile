@@ -4,14 +4,9 @@ CC_FLAGS=-Wall -std=c11 -O$(OPT)
 BUILDDIR=./build
 OUTDIR=./bin
 
-UNAME        := $(shell uname -s)
 INSTALL_USER := $(or $(SUDO_USER),$(USER))
 
-ifeq ($(UNAME),Darwin)
-USER_SHELL := $(shell dscl . -read /Users/$(INSTALL_USER) UserShell | awk '{print $$2}')
-else
 USER_SHELL := $(shell getent passwd $(INSTALL_USER) | cut -d: -f7)
-endif
 
 SHELLTYPE := $(if $(filter zsh,$(notdir $(USER_SHELL))),zsh,other)
 
