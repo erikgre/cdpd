@@ -1,4 +1,4 @@
-alias cdpd='cd $(prevwd)'
+alias cdpd='builtin cd $(prevwd)'
 
 cd() {
     builtin cd "$@" || return
